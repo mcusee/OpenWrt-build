@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 安装完整版依赖（稳定版）
+      # 安装依赖
       - name: Install Dependencies
         run: |
           sudo apt update
@@ -27,28 +27,70 @@ jobs:
           qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs \
           upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 
-      # 克隆 LEDE 源码
+      # 克隆 LEDE
       - name: Clone LEDE
         run: |
           git clone https://github.com/coolsnowwolf/lede.git lede
 
-      # 缓存 dl 目录（大幅提升速度）
+      # 缓存 dl
       - name: Cache dl
         uses: actions/cache@v4
         with:
           path: lede/dl
           key: ${{ runner.os }}-lede-dl
 
-      # 执行你的自定义脚本
+      # 执行 DIY 脚本
       - name: Run DIY Script
         run: |
           cd lede
           chmod +x ../build-diy.sh
           ../build-diy.sh
 
+      # 获取日期 + 内核 + 固件名
+      - name: Get Build Info
+        run: |
+          DATE=$(date +%Y-%m-%d)
+
+          KERNEL=$(grep KERNEL_PATCHVER lede/target/linux/x86/Makefile | cut -d= -f2)
+
+          FILE=$(ls lede/bin/targets/x86/64/*squashfs-combined*.img.gz | head -n1)
+
+          NAME=$(basename "$FILE" .img.gz)
+
+          FIRMWARE_NAME="${DATE}-k${KERNEL}-${NAME}"
+          PACKAGE_NAME="${DATE}-k${KERNEL}-packages"
+
+          echo "FIRMWARE_NAME=$FIRMWARE_NAME" >> $GITHUB_ENV
+          echo "PACKAGE_NAME=$PACKAGE_NAME" >> $GITHUB_ENV
+
       # 上传固件
       - name: Upload Firmware
         uses: actions/upload-artifact@v4
         with:
-          name: lede-firmware
-          path: lede/bin/targets/
+          name: ${{ env.FIRMWARE_NAME }}
+          path: lede/bin/targets/x86/64/*
+
+      # 上传 packages
+      - name: Upload Packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PACKAGE_NAME }}
+          path: lede/bin/packages/x86_64/*
+
+      # 打包固件
+      - name: Pack Firmware
+        run: |
+          cd lede/bin/targets/x86/64
+          tar -czf ../../../${{ env.FIRMWARE_NAME }}.tar.gz *
+
+      # 发布 Release
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.FIRMWARE_NAME }}
+          name: ${{ env.FIRMWARE_NAME }}
+          files: |
+            lede/${{ env.FIRMWARE_NAME }}.tar.gz
+            lede/bin/packages/x86_64/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
