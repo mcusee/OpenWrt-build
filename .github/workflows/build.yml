@@ -73,8 +73,8 @@ jobs:
       - name: Publish Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ env.DATE }}-${{ env.FW_NAME }}-k${{ env.KERNEL }}
-          name: ${{ env.DATE }}-${{ env.FW_NAME }}-k${{ env.KERNEL }}-Firmware
+          tag_name: ${{ env.DATE }}-OpenWrt-k${{ env.KERNEL }}-Firmware
+          name: ${{ env.DATE }}-OpenWrt-k${{ env.KERNEL }}-Firmware
           files: |
             lede/bin/targets/x86/64/*.img*
             lede/bin/targets/x86/64/*.vmdk
