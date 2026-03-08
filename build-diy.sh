@@ -77,7 +77,8 @@ sed -i 's/LEDE/OpenWrt/g' package/base-files/luci/bin/config_generate
 sed -i 's/LEDE/OpenWrt/g' package/lean/default-settings/files/zzz-default-settings
 
 echo "修改 x86 内核版本为 5.15..."
-sed -i 's/KERNEL_PATCHVER:=.*/KERNEL_PATCHVER:=5.15/' target/linux/x86/Makefile
+KERNEL=$1
+sed -i "s/KERNEL_PATCHVER:=.*/KERNEL_PATCHVER:=${KERNEL}/" target/linux/x86/Makefile
 echo "修改完成"
 
 echo "==============================="
