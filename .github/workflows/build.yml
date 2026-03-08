@@ -10,6 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-22.04
 
+    strategy:
+      matrix:
+        kernel: [5.4, 5.15]  # 同时编译两个内核
+
     steps:
       # 拉取你自己的仓库（包含 build-diy.sh）
       - name: Checkout
@@ -40,20 +44,23 @@ jobs:
         uses: actions/cache@v4
         with:
           path: lede/dl
-          key: ${{ runner.os }}-lede-dl
+          key: ${{ runner.os }}-lede-dl-${{ matrix.kernel }}
 
-      # 执行 DIY 脚本
+      # 执行 DIY 脚本运行脚本并传递 kernel内核
       - name: Run DIY Script
         run: |
           cd lede
           chmod +x ../build-diy.sh
-          ../build-diy.sh
+          ../build-diy.sh ${{ matrix.kernel }}
 
       # 获取日期 + 内核版本
       - name: Get Build Info
         run: |
+          # 设置当前日期
           echo "DATE=$(TZ=Asia/Shanghai date +%Y%m%d)" >> $GITHUB_ENV
-          echo "KERNEL=$(grep KERNEL_PATCHVER lede/target/linux/x86/Makefile | awk -F= '{print $2}')" >> $GITHUB_ENV
+
+          # 使用 matrix.kernel 直接设置内核版本
+          echo "KERNEL=${{ matrix.kernel }}" >> $GITHUB_ENV
 
       # 上传固件
       - name: Upload Firmware
@@ -75,6 +82,7 @@ jobs:
         with:
           tag_name: ${{ env.DATE }}-OpenWrt-k${{ env.KERNEL }}-Firmware
           name: ${{ env.DATE }}-OpenWrt-k${{ env.KERNEL }}-Firmware
+          overwrite_files: true
           files: |
             lede/bin/targets/x86/64/*.img*
             lede/bin/targets/x86/64/*.vmdk
