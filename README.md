@@ -1,8 +1,8 @@
-</p>
 <p align="center">
-  <a href="https://openwrt.org/_media/logo.png">
-    <img src="https://openwrt.org/_media/logo.png" width="300" alt="OpenWrt Logo" />
+  <a href="https://github.com/mcusee/OpenWrt/raw/main/img/openwrt-log_02.jpg">
+    <img src="https://github.com/mcusee/OpenWrt/raw/main/img/openwrt-log_02.jpg" width="300" alt="OpenWrt Logo" />
   </a>
+</p>
 </p>
 <p align="center">
   <a href="https://github.com/mcusee/OpenWrt-build/actions/workflows/build.yml">
