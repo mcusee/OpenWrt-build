@@ -31,7 +31,7 @@
 
 * ☁️ **云端自动编译**: 基于 GitHub Actions，无需本地高性能电脑，一键开启编译任务。
 * ⚡ **多固件支持**: 默认适配 **x86_64 (软路由)架构。
-* 🔄 **上游同步**: 定时自动拉取 [Lean's LEDE](https://github.com/coolsnowwolf/lede) 源码，保持内核与插件最新。
+* 🔄 **上游同步**: 启动自动拉取 [Lean's LEDE](https://github.com/coolsnowwolf/lede) 源码，保持内核与插件最新。
 * 🛠️ **一键定制**: 支持通过修改 `.config` 文件精准控制固件功能。
 
 ---
