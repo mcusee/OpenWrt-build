@@ -1,9 +1,13 @@
+</p>
 <p align="center">
   <a href="https://openwrt.org/_media/logo.png">
     <img src="https://openwrt.org/_media/logo.png" width="300" alt="OpenWrt Logo" />
   </a>
 </p>
-
+<p align="center">
+  <a href="https://github.com/mcusee/OpenWrt-build/actions/workflows/build.yml">
+    <img src="https://github.com/mcusee/OpenWrt-build/actions/workflows/build.yml/badge.svg" alt="Build OpenWrt">
+  </a>
 <p align="center">
   <a href="https://github.com/mcusee/OpenWrt-build/actions">
     <img src="https://img.shields.io/github/actions/workflow/status/mcusee/OpenWrt-build/build-openwrt.yml?branch=main&style=for-the-badge&logo=github-actions&label=Build%20Status" alt="Build Status">
