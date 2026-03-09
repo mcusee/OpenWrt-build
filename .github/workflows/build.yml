@@ -1,4 +1,4 @@
-name: LEDE Build
+name: Build OpenWrt
 
 on:
   workflow_dispatch:
