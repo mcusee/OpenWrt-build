@@ -6,6 +6,10 @@ on:
 permissions:
   contents: write
 
+# 关键修改：在这里全局强制开启 Node.js 24 运行环境
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -82,7 +86,7 @@ jobs:
         with:
           tag_name: ${{ env.DATE }}-OpenWrt-k${{ env.KERNEL }}-Firmware
           name: ${{ env.DATE }}-OpenWrt-k${{ env.KERNEL }}-Firmware
-          overwrite_files: true
+          make_latest: true
           files: |
             lede/bin/targets/x86/64/*.img*
             lede/bin/targets/x86/64/*.vmdk
