@@ -81,9 +81,9 @@ KERNEL=$1
 sed -i "s/KERNEL_PATCHVER:=.*/KERNEL_PATCHVER:=${KERNEL}/" target/linux/x86/Makefile
 echo "修改完成"
 
-echo "==============================="
+echo "========================================"
 echo "添加插件"
-echo "==============================="
+echo "========================================"
 
 # luci-theme-argon
 if [ -d "package/downloads/luci-theme-argon" ]; then
@@ -115,35 +115,13 @@ echo "替换完成"
 
 wget -O .config https://raw.githubusercontent.com/mcusee/studio/main/.config
 
-echo "==============================="
-echo "修正错误"
-echo "==============================="
-if [ -f feeds/small/shadowsocks-libev/Makefile ]; then
-    echo "修正 shadowsocks-libev 配置..."
-
-    FILE="feeds/small/shadowsocks-libev/Makefile"
-
-    #强制更新 PKG_MIRROR_HASH
-    sed -i 's/^PKG_MIRROR_HASH:=.*/PKG_MIRROR_HASH:=ee83b43b36d6a51cfbee72254b6088d4b625feadf06cc2f0bcb810c8236438a5/' "$FILE"
-
-    #如果还没添加 WITH_DOC_HTML，则插入
-    if ! grep -q "WITH_DOC_HTML" "$FILE"; then
-        sed -i '/^CMAKE_OPTIONS += \\/a\ \ \ \ -DWITH_DOC_HTML=OFF \\' "$FILE"
-    fi
-
-    #删除旧下载包（防止 hash 校验失败）
-    rm -f dl/shadowsocks-libev*
-
-    echo "shadowsocks-libev 修正完成"
-fi
-
-echo "==============================="
+echo "============================================="
 echo "DIY 脚本执行完成"
-echo "==============================="
+echo "============================================="
 
-echo "========================================"
+echo "============================================="
 echo "同步配置文件make defconfig"
-echo "========================================"
+echo "============================================="
 make defconfig
 
 echo "============================================="
@@ -186,6 +164,6 @@ echo "============================================="
 # 多线程编译，失败自动回退单线程详细模式
 make -j$(nproc) || make -j1 V=s
 
-echo "==============================="
+echo "============================================="
 echo "编译完成"
-echo "==============================="
+echo "============================================="
