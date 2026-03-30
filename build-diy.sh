@@ -52,6 +52,23 @@ fi
 ./scripts/feeds install -a
 
 echo "========================================"
+echo "更新 luci-app-passwall"
+echo "========================================"
+rm -rf feeds/small/luci-app-passwall package/feeds/small/luci-app-passwall && \
+
+git clone --depth 1 --filter=blob:none --sparse \
+  https://github.com/Openwrt-Passwall/openwrt-passwall.git temp-passwall && \
+
+cd temp-passwall && \
+git sparse-checkout set luci-app-passwall && \
+cd .. && \
+
+mv temp-passwall/luci-app-passwall feeds/small/ && \
+rm -rf temp-passwall && \
+
+./scripts/feeds install luci-app-passwall
+
+echo "========================================"
 echo "删除不需要的插件"
 echo "========================================"
 rm -rf feeds/packages/net/adguardhome
@@ -59,6 +76,7 @@ rm -rf feeds/luci/themes/luci-theme-argon
 rm -rf feeds/kenzo/luci-app-argon-config
 rm -rf feeds/kenzo/luci-app-adguardhome
 rm -rf feeds/kenzo/luci-theme-argon
+rm -rf feeds/kenzo/luci-theme-alpha
 rm -rf feeds/kenzo/adguardhome
 
 echo "========================================"
