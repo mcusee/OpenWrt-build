@@ -140,22 +140,6 @@ echo "========================================"
 echo "添加插件"
 echo "========================================"
 
-# luci-theme-argon
-if [ -d "package/downloads/luci-theme-argon" ]; then
-    echo "luci-theme-argon 已存在，跳过"
-else
-    echo "正在克隆 luci-theme-argon..."
-    git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/downloads/luci-theme-argon
-fi
-
-# luci-app-adguardhome
-if [ -d "package/luci-app-adguardhome" ]; then
-    echo "luci-app-adguardhome 已存在，跳过"
-else
-    echo "正在克隆 luci-app-adguardhome..."
-    git clone https://github.com/rufengsuixing/luci-app-adguardhome.git package/luci-app-adguardhome
-fi
-
 echo "克隆仓库到 studio 目录"
 rm -rf studio
 git clone https://github.com/mcusee/studio.git studio
