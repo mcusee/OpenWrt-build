@@ -131,10 +131,19 @@ sed -i 's/LEDE/OpenWrt/g' package/base-files/files/bin/config_generate
 sed -i 's/LEDE/OpenWrt/g' package/base-files/luci/bin/config_generate
 sed -i 's/LEDE/OpenWrt/g' package/lean/default-settings/files/zzz-default-settings
 
-echo "修改 x86 内核版本为 5.15..."
+echo "修改 x86 内核版本"
 KERNEL=$1
 sed -i "s/KERNEL_PATCHVER:=.*/KERNEL_PATCHVER:=${KERNEL}/" target/linux/x86/Makefile
 echo "修改完成"
+
+if [ "$KERNEL" = "5.4" ]; then
+    echo "检测到 5.4，修补 mdio-devres..."
+    sed -i '/define KernelPackage\/mdio-devres/,/endef/ s/KCONFIG:=CONFIG_MDIO_DEVRES=y/KCONFIG:=CONFIG_MDIO_DEVRES=m/' package/kernel/linux/modules/netdevices.mk
+    sed -i '/define KernelPackage\/mdio-devres/,/endef/ s/AutoProbe,mdio-devres/AutoProbe,mdio_devres/' package/kernel/linux/modules/netdevices.mk
+    echo "mdio-devres 修补完成"
+else
+    echo "当前不是 5.4，跳过 mdio-devres 修补"
+fi
 
 echo "========================================"
 echo "添加插件"

@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kernel: [5.4, 5.15]  # 同时编译两个内核
+        kernel: ['5.4', '5.15']  # 同时编译两个内核
 
     steps:
       # 拉取你自己的仓库（包含 build-diy.sh）
