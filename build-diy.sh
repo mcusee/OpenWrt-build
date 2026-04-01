@@ -26,6 +26,11 @@ else
 fi
 echo "=============== 修改完成！==============="
 
+echo "=============== 更新源码 ==============="
+./scripts/feeds update -a
+./scripts/feeds install -a
+echo "=============== 安装完成 ==============="
+
 echo "========================================"
 echo "添加软件源并更新更新feeds.conf.default"
 echo "========================================"
@@ -43,9 +48,11 @@ else
     echo "添加 small..."
     sed -i '1i src-git small https://github.com/kenzok8/small' feeds.conf.default
 fi
-echo "=============== 更新源码 ==============="
+
+echo "=============== 安装软件！==============="
 ./scripts/feeds update -a
-echo "=============== 更新完成 ==============="
+./scripts/feeds install -a
+echo "=============== 安装完成！==============="
 
 echo "========================================"
 echo "清理不需要的插件"
@@ -62,6 +69,20 @@ rm -rf feeds/kenzo/luci-theme-argon
 rm -rf feeds/kenzo/adguardhome
 rm -rf feeds/small/luci-app-fchomo
 rm -rf feeds/kenzo/luci-theme-alpha
+
+echo "→ 清理索引 package/feeds/ 下的软链接..."
+
+rm -f package/feeds/packages/adguardhome
+rm -f package/feeds/luci/luci-theme-argon
+rm -f package/feeds/kenzo/luci-app-argon-config
+rm -f package/feeds/kenzo/luci-app-adguardhome
+rm -f package/feeds/kenzo/smartdns
+rm -f package/feeds/kenzo/luci-app-smartdns
+rm -f package/feeds/kenzo/luci-theme-argon
+rm -f package/feeds/kenzo/adguardhome
+rm -f package/feeds/small/luci-app-fchomo
+rm -f package/feeds/kenzo/luci-theme-alpha
+echo "============= 清理索引完成！============="
 
 echo "==============================="
 echo "添加插件"
@@ -96,25 +117,7 @@ cd .. && \
 
 mv temp-passwall/luci-app-passwall feeds/small/ && \
 rm -rf temp-passwall && \
-
-echo "=============== 安装插件！==============="
-./scripts/feeds update -a
-./scripts/feeds install -a
-echo "=============== 安装完成！==============="
-
-echo "→ 清理索引 package/feeds/ 下的软链接..."
-
-rm -f package/feeds/packages/adguardhome
-rm -f package/feeds/luci/luci-theme-argon
-rm -f package/feeds/kenzo/luci-app-argon-config
-rm -f package/feeds/kenzo/luci-app-adguardhome
-rm -f package/feeds/kenzo/smartdns
-rm -f package/feeds/kenzo/luci-app-smartdns
-rm -f package/feeds/kenzo/luci-theme-argon
-rm -f package/feeds/kenzo/adguardhome
-rm -f package/feeds/small/luci-app-fchomo
-rm -f package/feeds/kenzo/luci-theme-alpha
-echo "============= 清理索引完成！============="
+./scripts/feeds install -f luci-app-passwall
 
 echo "========================================"
 echo "修改本地文件"
@@ -136,14 +139,32 @@ KERNEL=$1
 sed -i "s/KERNEL_PATCHVER:=.*/KERNEL_PATCHVER:=${KERNEL}/" target/linux/x86/Makefile
 echo "修改完成"
 
+# ====================== mdio-devres 智能处理 ======================
+# 规则：只有 5.4 需要禁用，其他所有内核版本（5.15、6.x 等）都保持作者原配置
+echo "========================================"
+echo "处理 kmod-mdio-devres（仅 5.4 禁用，其他内核正常）"
+echo "========================================"
+
 if [ "$KERNEL" = "5.4" ]; then
-    echo "检测到 5.4，修补 mdio-devres..."
-    sed -i '/define KernelPackage\/mdio-devres/,/endef/ s/KCONFIG:=CONFIG_MDIO_DEVRES=y/KCONFIG:=CONFIG_MDIO_DEVRES=m/' package/kernel/linux/modules/netdevices.mk
-    sed -i '/define KernelPackage\/mdio-devres/,/endef/ s/AutoProbe,mdio-devres/AutoProbe,mdio_devres/' package/kernel/linux/modules/netdevices.mk
-    echo "mdio-devres 修补完成"
+    echo "检测到 KERNEL=5.4，开始处理 mdio-devres..."
+
+    # 检查作者是否已经自行加入版本限制
+    if grep -qE "LINUX_5_10|LINUX_5_15|!LINUX_5_4" package/kernel/linux/modules/netdevices.mk; then
+        echo "✅ 作者已提供版本限制，信任作者修复，跳过手动修改"
+    else
+        echo "⚠️  作者尚未修复 5.4 问题，自动添加仅 5.4 禁用的规则"
+        
+        sed -i '/define KernelPackage\/mdio-devres/,/endef/ {
+            s/DEPENDS:=.*/DEPENDS:=@!LINUX_5_4 +kmod-libphy +(TARGET_armvirt||TARGET_bcm27xx_bcm2708||TARGET_loongarch64||TARGET_malta||TARGET_tegra):kmod-of-mdio/
+            s/KCONFIG:=CONFIG_MDIO_DEVRES=y/KCONFIG:=CONFIG_MDIO_DEVRES/
+        }' package/kernel/linux/modules/netdevices.mk
+    fi
 else
-    echo "当前不是 5.4，跳过 mdio-devres 修补"
+    echo "当前 KERNEL=${KERNEL}（非 5.4），不做任何修改，保持作者原配置（正常启用 mdio-devres）"
 fi
+
+echo "mdio-devres 处理完成"
+# ====================== mdio-devres 处理结束 ======================
 
 echo "========================================"
 echo "添加插件"
