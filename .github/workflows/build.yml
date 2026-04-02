@@ -18,13 +18,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - kernel: '5.4'
-            script: 'build-diy5.4.sh'
+          # - kernel: '5.4'
+          #   script: 'build-diy5.4.sh'
+          - kernel: '5.10'
+            script: 'build-diy5.10.sh'
           - kernel: '5.15'
             script: 'build-diy5.15.sh'
+          - kernel: '6.12'
+            script: 'build-diy6.12.sh'
 
     steps:
-      # 拉取你自己的仓库（包含 build-diy5.4.sh 和 build-diy5.15.sh）
+      # 拉取你自己的仓库（包含 build-diy5.10.sh、build-diy5.15.sh、build-diy6.12.sh）
       - name: Checkout
         uses: actions/checkout@v5
 
@@ -96,7 +100,7 @@ jobs:
         with:
           tag_name: ${{ env.DATE }}-OpenWrt-k${{ env.KERNEL }}-Firmware
           name: ${{ env.DATE }}-OpenWrt-k${{ env.KERNEL }}-Firmware
-          make_latest: ${{ matrix.kernel == '5.15' }}
+          make_latest: ${{ matrix.kernel == '6.12' }}
           overwrite_files: true
           files: |
             lede/bin/targets/x86/64/*.img*
@@ -108,11 +112,13 @@ jobs:
 
       # 发送 Telegram 通知
       - name: Send Telegram Notification
-        if: ${{ success() && env.TG_TOKEN != '' }}
+        if: ${{ success() }}
         env:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
         run: |
+          [ -n "$TG_TOKEN" ] || exit 0
+          [ -n "$TG_CHAT_ID" ] || exit 0
           MESSAGE="✅ OpenWrt 编译完成
           📅 版本: ${{ env.DATE }}
           🧠 Kernel: ${{ env.KERNEL }}
