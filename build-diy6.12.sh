@@ -8,19 +8,22 @@ echo "========================================="
 echo "========================================="
 echo "处理 feeds.conf.default 是否已是目标状态..."
 echo "========================================="
-if grep -q "^src-git luci https://github.com/coolsnowwolf/luci.git$" feeds.conf.default \
-   && ! grep -q "^[^#].*luci\.git;openwrt-23\.05" feeds.conf.default \
-   && ! grep -q "^[^#].*luci\.git;openwrt-24\.10" feeds.conf.default
+# 目标源地址
+TARGET_SOURCE="src-git luci https://github.com/coolsnowwolf/luci"
+
+# 检查是否已经是理想状态：即没有带分号的 luci 源被启用，且基础版 luci 源已启用
+if ! grep -q "^[^#].*luci\.git;" feeds.conf.default && grep -q "^$TARGET_SOURCE$" feeds.conf.default
 then
     echo "已经是目标状态，跳过修改"
 else
-    echo "检测到未调整，开始修正..."
+    echo "检测到版本不匹配，开始修正..."
 
-    sed -i \
-        -e '/^[^#].*luci\.git;openwrt-23\.05/s/^/#/' \
-        -e '/^[^#].*luci\.git;openwrt-24\.10/s/^/#/' \
-        -e '/^#src-git luci https:\/\/github\.com\/coolsnowwolf\/luci\.git$/s/^#//' \
-        feeds.conf.default
+    # 1. 注释掉所有带分号(版本号)的 luci 源 (包括 23.05, 24.10, 25.12 等)
+    sed -i '/^[^#].*luci\.git;/s/^/#/' feeds.conf.default
+
+    # 2. 移除基础版 luci 源前面的 # 号 (激活它)
+    # 注意这里使用了精确匹配，防止误伤
+    sed -i "s|^#$TARGET_SOURCE$|$TARGET_SOURCE|" feeds.conf.default
 
     echo "修改完成"
 fi
