@@ -5,6 +5,30 @@ echo "========================================="
 echo "开始执行 DIY 自定义脚本"
 echo "========================================="
 
+echo "========================================="
+echo "处理 feeds.conf.default 是否已是目标状态..."
+echo "========================================="
+# 目标源地址
+TARGET_SOURCE="src-git luci https://github.com/coolsnowwolf/luci"
+
+# 检查是否已经是理想状态：即没有带分号的 luci 源被启用，且基础版 luci 源已启用
+if ! grep -q "^[^#].*luci\.git;" feeds.conf.default && grep -q "^$TARGET_SOURCE$" feeds.conf.default
+then
+    echo "已经是目标状态，跳过修改"
+else
+    echo "检测到版本不匹配，开始修正..."
+
+    # 1. 注释掉所有带分号(版本号)的 luci 源 (包括 23.05, 24.10, 25.12 等)
+    sed -i '/^[^#].*luci\.git;/s/^/#/' feeds.conf.default
+
+    # 2. 移除基础版 luci 源前面的 # 号 (激活它)
+    # 注意这里使用了精确匹配，防止误伤
+    sed -i "s|^#$TARGET_SOURCE$|$TARGET_SOURCE|" feeds.conf.default
+
+    echo "修改完成"
+fi
+echo "=============== 修改完成！==============="
+
 echo "=============== 更新源码 ==============="
 ./scripts/feeds update -a
 ./scripts/feeds install -a
@@ -40,9 +64,11 @@ echo "→ 清理 feeds/ 下的源目录..."
 
 rm -rf feeds/packages/net/adguardhome
 rm -rf feeds/luci/themes/luci-theme-argon
+rm -rf feeds/kenzo/luci-app-argon-config
 rm -rf feeds/kenzo/luci-app-adguardhome
 rm -rf feeds/kenzo/smartdns
 rm -rf feeds/kenzo/luci-app-smartdns
+rm -rf feeds/kenzo/luci-theme-argon
 rm -rf feeds/kenzo/adguardhome
 rm -rf feeds/small/luci-app-fchomo
 rm -rf feeds/kenzo/luci-theme-alpha
@@ -56,9 +82,11 @@ echo "→ 清理索引 package/feeds/ 下的软链接..."
 
 rm -rf package/feeds/packages/adguardhome
 rm -rf package/feeds/luci/luci-theme-argon
+rm -rf package/feeds/kenzo/luci-app-argon-config
 rm -rf package/feeds/kenzo/luci-app-adguardhome
 rm -rf package/feeds/kenzo/smartdns
 rm -rf package/feeds/kenzo/luci-app-smartdns
+rm -rf package/feeds/kenzo/luci-theme-argon
 rm -rf package/feeds/kenzo/adguardhome
 rm -rf package/feeds/small/luci-app-fchomo
 rm -rf package/feeds/kenzo/luci-theme-alpha
@@ -74,6 +102,13 @@ echo "============= 清理索引完成！============="
 echo "==============================="
 echo "添加插件"
 echo "==============================="
+# luci-theme-argon
+if [ -d "package/downloads/luci-theme-argon" ]; then
+    echo "luci-theme-argon 已存在，跳过"
+else
+    echo "正在克隆 luci-theme-argon..."
+    git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/downloads/luci-theme-argon
+fi
 
 # luci-app-adguardhome
 if [ -d "package/luci-app-adguardhome" ]; then
