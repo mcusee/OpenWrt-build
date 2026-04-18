@@ -128,8 +128,10 @@ echo "修改默认IP"
 sed -i 's/192.168.1.1/192.168.10.1/g' package/base-files/luci/bin/config_generate
 
 echo "设置默认主题为 argon"
-sed -i "s/bootstrap/argon/g" feeds/luci/collections/luci/Makefile
-sed -i "s/Bootstrap/argon/g" feeds/luci/collections/luci/Makefile
+# 使用 gi 标志，一个命令同时搞定大小写，且描述和依赖包名都换掉
+sed -i "s/bootstrap/argon/gi" feeds/luci/collections/luci-light/Makefile
+sed -i "s/bootstrap/argon/gi" feeds/luci/collections/luci-nginx/Makefile
+sed -i "s/bootstrap/argon/gi" feeds/luci/collections/luci-ssl-nginx/Makefile
 
 echo "修改固件品牌名称"
 sed -i 's/LEDE/OpenWrt/g' package/base-files/files/bin/config_generate
