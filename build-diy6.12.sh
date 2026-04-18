@@ -73,6 +73,10 @@ rm -rf feeds/kenzo/adguardhome
 rm -rf feeds/small/luci-app-fchomo
 rm -rf feeds/kenzo/luci-theme-alpha
 rm -rf feeds/kenzo/luci-app-eqos
+rm -rf feeds/luci/applications/luci-app-adguardhome
+rm -rf feeds/luci/applications/luci-app-passwall
+rm -rf feeds/luci/applications/luci-app-passwall2
+rm -rf feeds/luci/applications/luci-app-openclash
 
 echo "→ 清理索引 package/feeds/ 下的软链接..."
 
@@ -87,6 +91,12 @@ rm -rf package/feeds/kenzo/adguardhome
 rm -rf package/feeds/small/luci-app-fchomo
 rm -rf package/feeds/kenzo/luci-theme-alpha
 rm -rf package/feeds/kenzo/luci-app-eqos
+rm -rf package/feeds/luci/luci-app-adguardhome
+rm -rf package/feeds/luci/luci-app-passwall
+rm -rf package/feeds/luci/luci-app-passwall2
+rm -rf package/feeds/luci/luci-app-openclash
+
+
 echo "============= 清理索引完成！============="
 
 echo "==============================="
