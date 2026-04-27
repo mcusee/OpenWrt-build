@@ -46,42 +46,6 @@ echo "=============== 更新源码 ==============="
 ./scripts/feeds install -a
 echo "=============== 安装完成 ==============="
 
-# =========================================================
-# HAProxy 3.2.15 全自动集成代码 (2026-04 修正版)
-# =========================================================
-
-# 1. 动态定位 HAProxy 源码目录
-HAPROXY_DIR=$(find ./feeds -name "haproxy" -type d | head -n 1)
-
-if [ -n "$HAPROXY_DIR" ]; then
-    echo "[INFO] 正在目标目录中升级 HAProxy: $HAPROXY_DIR"
-
-    # 2. 更新元数据
-    # PKG_HASH 已根据你刚才的报错日志更新为 117e408...
-    sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=3.2.15/" $HAPROXY_DIR/Makefile
-    sed -i "s/PKG_HASH:=.*/PKG_HASH:=117e408aff544c9ad758c2fb3fd8cf791a72609d3ae319b2cf9f2a0b035393c2/" $HAPROXY_DIR/Makefile
-    sed -i "s|PKG_SOURCE_URL:=.*|PKG_SOURCE_URL:=https://www.haproxy.org/download/3.2/src/|" $HAPROXY_DIR/Makefile
-
-    # 3. 禁用旧版补丁机制
-    [ -f "$HAPROXY_DIR/get-latest-patches.sh" ] && chmod -x "$HAPROXY_DIR/get-latest-patches.sh"
-    rm -rf "$HAPROXY_DIR/patches"
-    mkdir -p "$HAPROXY_DIR/patches"
-
-    # 4. 依赖对齐：切换到 PCRE2
-    sed -i "s/+libpcre /+libpcre2 /g" $HAPROXY_DIR/Makefile
-    sed -i "s/USE_PCRE=1/USE_PCRE2=1/g" $HAPROXY_DIR/Makefile
-    sed -i "s/USE_PCRE_JIT=1/USE_PCRE2_JIT=1/g" $HAPROXY_DIR/Makefile
-
-    # 5. 编译优化与功能开启
-    sed -i "s/TARGET=linux-glibc/TARGET=linux-musl/" $HAPROXY_DIR/Makefile
-    # 开启 QUIC 支持 (需配合 OpenSSL 3.0)
-    sed -i '/USE_PROMEX=1/a \		USE_QUIC=1 USE_OPENSSL_WOLFSSL=0 \\' $HAPROXY_DIR/Makefile
-
-    echo "[SUCCESS] HAProxy 3.2.15 完整配置已就绪。"
-else
-    echo "[ERROR] 找不到 HAProxy 目录。"
-fi
-
 echo "========================================"
 echo "添加软件源并更新更新feeds.conf.default"
 echo "========================================"
