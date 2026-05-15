@@ -98,7 +98,7 @@ jobs:
           
       # 发布 Release
       - name: Publish Release
-        uses: softprops/action-gh-release@v2.5.0
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ env.DATE }}-OpenWrt-k${{ env.KERNEL }}-Firmware
           name: ${{ env.DATE }}-OpenWrt-k${{ env.KERNEL }}-Firmware
