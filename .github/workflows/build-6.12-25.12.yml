@@ -13,6 +13,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    timeout-minutes: 480   # 8 小时
 
     strategy:
       fail-fast: false
@@ -62,6 +63,19 @@ jobs:
           key: ${{ runner.os }}-lede-dl-${{ matrix.kernel }}
           restore-keys: |
             ${{ runner.os }}-lede-dl-
+
+      # 缓存编译中间产物（大幅加速后续构建）
+      - name: Cache build
+        uses: actions/cache@v5
+        with:
+          path: |
+            lede/build_dir
+            lede/staging_dir
+            lede/tmp
+          key: ${{ runner.os }}-lede-build-${{ matrix.kernel }}-${{ hashFiles('**/.config', '**/build-diy*.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-lede-build-${{ matrix.kernel }}-
+            ${{ runner.os }}-lede-build-
 
       # 执行对应的 DIY 脚本
       - name: Run DIY Script
