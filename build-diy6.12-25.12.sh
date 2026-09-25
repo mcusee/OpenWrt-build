@@ -121,10 +121,10 @@ echo "修改完成"
 
 
 
-echo "下载 bg1.jpg..."
-wget -O package/downloads/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg \
-https://raw.githubusercontent.com/mcusee/studio/main/icons/bg1.jpg
-echo "替换完成"
+#echo "下载 bg1.jpg..."
+#wget -O package/downloads/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg \
+#https://raw.githubusercontent.com/mcusee/studio/main/icons/bg1.jpg
+#echo "替换完成"
 
 wget -O .config https://raw.githubusercontent.com/mcusee/OpenWrt-build/refs/heads/main/Backup/25.12/.config
 
