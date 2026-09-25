@@ -9,12 +9,18 @@ echo "========================================="
 echo "处理 feeds.conf.default 是否已是目标状态..."
 echo "========================================="
 
+# ========== 新增部分：注释掉 helloworld ==========
+FILENAME="feeds.conf.default"
+echo "正在注释 helloworld 源..."
+sed -i '/^src-git helloworld /s/^/#/' "$FILENAME"
+echo "helloworld 已注释完成。"
+
 echo "=============== 修改完成！==============="
 
-echo "=============== 更新源码 ==============="
-./scripts/feeds update -a
-./scripts/feeds install -a
-echo "=============== 安装完成 ==============="
+#echo "=============== 更新源码 ==============="
+#./scripts/feeds update -a
+#./scripts/feeds install -a
+#echo "=============== 安装完成 ==============="
 
 echo "========================================"
 echo "添加软件源并更新更新feeds.conf.default"
