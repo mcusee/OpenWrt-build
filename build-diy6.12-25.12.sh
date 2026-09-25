@@ -125,14 +125,22 @@ KERNEL=$1
 sed -i "s/KERNEL_PATCHVER:=.*/KERNEL_PATCHVER:=${KERNEL}/" target/linux/x86/Makefile
 echo "修改完成"
 
-
+echo "========================================"
+echo "克隆仓库到 OpenWrt-build 目录"
+echo "========================================"
+rm -rf studio
+# 添加了 git clone 命令，并直接将仓库克隆到 studio 文件夹
+git clone https://github.com/mcusee/OpenWrt-build.git studio
+cp -f studio/icons/*.svg feeds/luci/modules/luci-base/htdocs/luci-static/resources/icons/
+# 修正了提示信息，使其与 .svg 文件后缀匹配
+echo "SVG 图标替换完成"
 
 #echo "下载 bg1.jpg..."
 #wget -O package/downloads/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg \
 #https://raw.githubusercontent.com/mcusee/studio/main/icons/bg1.jpg
 #echo "替换完成"
 
-wget -O .config https://raw.githubusercontent.com/mcusee/OpenWrt-build/refs/heads/main/Backup/25.12/.config
+wget -O .config https://raw.githubusercontent.com/mcusee/OpenWrt-build/main/.config
 
 echo "============================================="
 echo "DIY 脚本执行完成"
