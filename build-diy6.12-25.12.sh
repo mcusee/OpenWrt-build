@@ -44,7 +44,7 @@ rm -rf feeds/luci/applications/luci-app-adguardhome
 rm -rf feeds/luci/applications/luci-app-passwall
 rm -rf feeds/luci/applications/luci-app-passwall2
 #rm -rf feeds/luci/applications/luci-app-openclash
-rm -rf feeds/luci/applications/luci-theme-argon-config
+rm -rf feeds/luci/applications/luci-app-argon-config
 
 echo "→ 清理索引 package/feeds/ 下的软链接..."
 
@@ -58,7 +58,7 @@ rm -rf package/feeds/luci/luci-app-adguardhome
 rm -rf package/feeds/luci/luci-app-passwall
 rm -rf package/feeds/luci/luci-app-passwall2
 #rm -rf package/feeds/luci/luci-app-openclash
-rm -rf package/feeds/luci/luci-theme-argon-config
+rm -rf package/feeds/luci/luci-app-argon-config
 echo "============= 清理索引完成！============="
 
 echo "==============================="
