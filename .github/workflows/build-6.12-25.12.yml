@@ -13,7 +13,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-22.04
-    timeout-minutes: 480   # 8 小时
+    timeout-minutes: 360   # 6 小时
 
     strategy:
       fail-fast: false

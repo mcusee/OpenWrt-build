@@ -22,23 +22,7 @@ echo "=============== 修改完成！==============="
 #./scripts/feeds install -a
 #echo "=============== 安装完成 ==============="
 
-echo "========================================"
-echo "添加软件源并更新更新feeds.conf.default"
-echo "========================================"
-if grep -q "github.com/kenzok8/openwrt-packages" feeds.conf.default; then
-    echo "kenzo 已存在，跳过"
-else
-    echo "添加 kenzo..."
-    sed -i '1i src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
-fi
-echo "检查 small..."
 
-if grep -q "github.com/kenzok8/small" feeds.conf.default; then
-    echo "small 已存在，跳过"
-else
-    echo "添加 small..."
-    sed -i '1i src-git small https://github.com/kenzok8/small' feeds.conf.default
-fi
 
 echo "=============== 安装软件！==============="
 ./scripts/feeds update -a
@@ -56,11 +40,11 @@ rm -rf feeds/kenzo/luci-app-adguardhome
 rm -rf feeds/kenzo/adguardhome
 rm -rf feeds/small/luci-app-fchomo
 rm -rf feeds/kenzo/luci-theme-alpha
-rm -rf feeds/kenzo/luci-app-eqos
 rm -rf feeds/luci/applications/luci-app-adguardhome
 rm -rf feeds/luci/applications/luci-app-passwall
 rm -rf feeds/luci/applications/luci-app-passwall2
-rm -rf feeds/luci/applications/luci-app-openclash
+#rm -rf feeds/luci/applications/luci-app-openclash
+rm -rf feeds/luci/applications/luci-theme-argon-config
 
 echo "→ 清理索引 package/feeds/ 下的软链接..."
 
@@ -70,12 +54,11 @@ rm -rf package/feeds/kenzo/luci-app-adguardhome
 rm -rf package/feeds/kenzo/adguardhome
 rm -rf package/feeds/small/luci-app-fchomo
 rm -rf package/feeds/kenzo/luci-theme-alpha
-rm -rf package/feeds/kenzo/luci-app-eqos
 rm -rf package/feeds/luci/luci-app-adguardhome
 rm -rf package/feeds/luci/luci-app-passwall
 rm -rf package/feeds/luci/luci-app-passwall2
-rm -rf package/feeds/luci/luci-app-openclash
-
+#rm -rf package/feeds/luci/luci-app-openclash
+rm -rf package/feeds/luci/luci-theme-argon-config
 echo "============= 清理索引完成！============="
 
 echo "==============================="
@@ -89,18 +72,27 @@ else
     git clone https://github.com/rufengsuixing/luci-app-adguardhome.git package/luci-app-adguardhome
 fi
 
-echo "========================================"
-echo "更新 luci-app-passwall"
-echo "========================================"
-rm -rf feeds/small/luci-app-passwall
-git clone --depth 1 --filter=blob:none --sparse \
-  https://github.com/Openwrt-Passwall/openwrt-passwall.git temp-passwall && \
-cd temp-passwall && \
-git sparse-checkout set luci-app-passwall && \
-cd .. && \
-mv temp-passwall/luci-app-passwall feeds/small/ && \
-rm -rf temp-passwall && \
-./scripts/feeds install -f luci-app-passwall
+echo "==============================="
+echo "添加插件"
+echo "==============================="
+# luci-theme-argon
+if [ -d "package/downloads/luci-theme-argon" ]; then
+    echo "luci-theme-argon 已存在，跳过"
+else
+    echo "正在克隆 luci-theme-argon..."
+    git clone https://github.com/jerrykuku/luci-theme-argon.git package/downloads/luci-theme-argon
+fi
+
+echo "==============================="
+echo "添加插件"
+echo "==============================="
+# openwrt-passwall
+if [ -d "package/downloads/openwrt-passwall" ]; then
+    echo "openwrt-passwall 已存在，跳过"
+else
+    echo "正在克隆 openwrt-passwall..."
+    git clone https://github.com/Openwrt-Passwall/openwrt-passwall.git package/downloads/openwrt-passwall
+fi
 
 echo "========================================"
 echo "修改本地文件"
@@ -135,10 +127,10 @@ cp -f studio/icons/*.svg feeds/luci/modules/luci-base/htdocs/luci-static/resourc
 # 修正了提示信息，使其与 .svg 文件后缀匹配
 echo "SVG 图标替换完成"
 
-#echo "下载 bg1.jpg..."
-#wget -O package/downloads/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg \
-#https://raw.githubusercontent.com/mcusee/studio/main/icons/bg1.jpg
-#echo "替换完成"
+echo "下载 bg1.jpg..."
+wget -O package/downloads/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg \
+https://raw.githubusercontent.com/mcusee/OpenWrt-build/main/icons/bg1.jpg
+echo "替换完成"
 
 wget -O .config https://raw.githubusercontent.com/mcusee/OpenWrt-build/refs/heads/main/Backup/25.12/.config
 
