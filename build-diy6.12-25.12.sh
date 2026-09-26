@@ -87,11 +87,11 @@ echo "==============================="
 echo "添加插件"
 echo "==============================="
 # openwrt-passwall
-if [ -d "package/downloads/openwrt-passwall" ]; then
+if [ -d "package/openwrt-passwall" ]; then
     echo "openwrt-passwall 已存在，跳过"
 else
     echo "正在克隆 openwrt-passwall..."
-    git clone https://github.com/Openwrt-Passwall/openwrt-passwall.git package/downloads/openwrt-passwall
+    git clone https://github.com/Openwrt-Passwall/openwrt-passwall.git package/openwrt-passwall
 fi
 
 echo "========================================"
