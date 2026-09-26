@@ -54,6 +54,8 @@ rm -rf feeds/packages/net/adguardhome
 rm -rf feeds/luci/themes/luci-theme-argon
 rm -rf feeds/kenzo/luci-app-adguardhome
 rm -rf feeds/kenzo/adguardhome
+#rm -rf feeds/kenzo/luci-app-argon-config
+rm -rf feeds/kenzo/luci-theme-argon
 rm -rf feeds/small/luci-app-fchomo
 rm -rf feeds/kenzo/luci-theme-alpha
 rm -rf feeds/luci/applications/luci-app-adguardhome
@@ -68,6 +70,8 @@ rm -rf package/feeds/packages/adguardhome
 rm -rf package/feeds/luci/luci-theme-argon
 rm -rf package/feeds/kenzo/luci-app-adguardhome
 rm -rf package/feeds/kenzo/adguardhome
+#rm -rf package/feeds/kenzo/luci-app-argon-config
+rm -rf package/feeds/kenzo/luci-theme-argon
 rm -rf package/feeds/small/luci-app-fchomo
 rm -rf package/feeds/kenzo/luci-theme-alpha
 rm -rf package/feeds/luci/luci-app-adguardhome
