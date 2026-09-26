@@ -22,7 +22,23 @@ echo "=============== 修改完成！==============="
 #./scripts/feeds install -a
 #echo "=============== 安装完成 ==============="
 
+echo "========================================"
+echo "添加软件源并更新更新feeds.conf.default"
+echo "========================================"
+if grep -q "github.com/kenzok8/openwrt-packages" feeds.conf.default; then
+    echo "kenzo 已存在，跳过"
+else
+    echo "添加 kenzo..."
+    sed -i '1i src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
+fi
+echo "检查 small..."
 
+if grep -q "github.com/kenzok8/small" feeds.conf.default; then
+    echo "small 已存在，跳过"
+else
+    echo "添加 small..."
+    sed -i '1i src-git small https://github.com/kenzok8/small' feeds.conf.default
+fi
 
 echo "=============== 安装软件！==============="
 ./scripts/feeds update -a
