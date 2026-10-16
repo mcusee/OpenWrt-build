@@ -156,8 +156,8 @@ cp -f studio/icons/*.svg feeds/luci/modules/luci-base/htdocs/luci-static/resourc
 # 修正了提示信息，使其与 .svg 文件后缀匹配
 echo "SVG 图标替换完成"
 
-echo "下载 bg1.jpg..."
-wget -O package/downloads/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg https://cdn.jsdelivr.net/gh/mcusee/OpenWrt-build@main/icons/bg1.jpg
+echo "下载 bg1.webp..."
+wget -O package/downloads/luci-theme-argon/htdocs/luci-static/argon/img/bg1.webp https://cdn.jsdelivr.net/gh/mcusee/OpenWrt-build@main/icons/bg1.webp
 echo "替换完成"
 
 wget -O .config https://raw.githubusercontent.com/mcusee/OpenWrt-build/refs/heads/main/Backup/25.12/.config
