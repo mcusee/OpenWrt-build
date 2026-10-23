@@ -61,8 +61,8 @@ echo "→ 清理 feeds/ 下的源目录..."
 
 rm -rf feeds/packages/net/adguardhome
 rm -rf feeds/luci/themes/luci-theme-argon
-rm -rf feeds/kenzo/luci-app-adguardhome
-rm -rf feeds/kenzo/adguardhome
+#rm -rf feeds/kenzo/luci-app-adguardhome
+#rm -rf feeds/kenzo/adguardhome
 rm -rf feeds/kenzo/luci-app-argon-config
 rm -rf feeds/kenzo/luci-theme-argon
 rm -rf feeds/small/luci-app-fchomo
@@ -77,8 +77,8 @@ echo "→ 清理索引 package/feeds/ 下的软链接..."
 
 rm -rf package/feeds/packages/adguardhome
 rm -rf package/feeds/luci/luci-theme-argon
-rm -rf package/feeds/kenzo/luci-app-adguardhome
-rm -rf package/feeds/kenzo/adguardhome
+#rm -rf package/feeds/kenzo/luci-app-adguardhome
+#rm -rf package/feeds/kenzo/adguardhome
 rm -rf package/feeds/kenzo/luci-app-argon-config
 rm -rf package/feeds/kenzo/luci-theme-argon
 rm -rf package/feeds/small/luci-app-fchomo
@@ -93,13 +93,7 @@ echo "============= 清理索引完成！============="
 echo "==============================="
 echo "添加插件"
 echo "==============================="
-# luci-app-adguardhome
-if [ -d "package/luci-app-adguardhome" ]; then
-    echo "luci-app-adguardhome 已存在，跳过"
-else
-    echo "正在克隆 luci-app-adguardhome..."
-    git clone https://github.com/rufengsuixing/luci-app-adguardhome.git package/luci-app-adguardhome
-fi
+
 
 echo "==============================="
 echo "添加插件"
