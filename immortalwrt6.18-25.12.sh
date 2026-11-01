@@ -36,7 +36,7 @@ echo "==============================="
 # 1. 克隆到 temp-kenzo
 mkdir -p temp-kenzo
 git clone --depth=1 https://github.com/kenzok8/openwrt-packages.git temp-kenzo/openwrt-packages
-git clone --depth=1 https://github.com/kenzok8/small.git temp-kenzo/small
+#git clone --depth=1 https://github.com/kenzok8/small.git temp-kenzo/small
 # 2. 创建目标目录
 mkdir -p package/kenzo
 
@@ -45,8 +45,8 @@ mkdir -p package/kenzo
 #cp -r temp-kenzo/openwrt-packages/luci-app-store package/kenzo/
 cp -r temp-kenzo/openwrt-packages/luci-app-fileassistant package/kenzo/
 # ----- 从 small 复制依赖 -----
-cp -r temp-kenzo/small/luci-app-ssr-plus package/kenzo/
-cp -r temp-kenzo/small/luci-app-mosdns package/kenzo/
+#cp -r temp-kenzo/small/luci-app-ssr-plus package/kenzo/
+#cp -r temp-kenzo/small/luci-app-mosdns package/kenzo/
 # 4. 删除临时目录
 rm -rf temp-kenzo
 
