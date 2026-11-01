@@ -72,7 +72,7 @@ jobs:
             immortalwrt/build_dir
             immortalwrt/staging_dir
             immortalwrt/tmp
-          key: ${{ runner.os }}-immortalwrt-build-${{ matrix.kernel }}-${{ hashFiles('**/.config', '**/build-diy*.sh') }}
+          key: ${{ runner.os }}-immortalwrt-build-${{ matrix.kernel }}-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-immortalwrt-build-${{ matrix.kernel }}-
             ${{ runner.os }}-immortalwrt-build-
