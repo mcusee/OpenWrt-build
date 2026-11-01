@@ -4,6 +4,8 @@ set -e
 echo "========================================="
 echo "开始执行 DIY 自定义脚本"
 echo "========================================="
+echo >> feeds.conf.default
+echo 'src-git istore https://github.com/linkease/istore;main' >> feeds.conf.default
 
 echo "=============== 安装软件！==============="
 ./scripts/feeds update -a
@@ -17,6 +19,7 @@ echo "→ 清理 feeds/ 下的源目录..."
 
 #rm -rf feeds/packages/net/adguardhome
 rm -rf feeds/luci/themes/luci-theme-argon
+rm -rf feeds/luci/applications/luci-app-argon-config
 rm -rf feeds/luci/applications/luci-app-passwall
 rm -rf feeds/luci/applications/luci-app-passwall2
 #rm -rf feeds/luci/applications/luci-app-openclash
@@ -25,6 +28,7 @@ echo "→ 清理索引 package/feeds/ 下的软链接..."
 
 #rm -rf package/feeds/packages/adguardhome
 rm -rf package/feeds/luci/luci-theme-argon
+rm -rf package/feeds/luci/luci-app-argon-config
 rm -rf package/feeds/luci/luci-app-passwall
 rm -rf package/feeds/luci/luci-app-passwall2
 #rm -rf package/feeds/luci/luci-app-openclash
@@ -33,22 +37,7 @@ echo "============= 清理索引完成！============="
 echo "==============================="
 echo "添加插件"
 echo "==============================="
-# 1. 克隆到 temp-kenzo
-mkdir -p temp-kenzo
-git clone --depth=1 https://github.com/kenzok8/openwrt-packages.git temp-kenzo/openwrt-packages
-#git clone --depth=1 https://github.com/kenzok8/small.git temp-kenzo/small
-# 2. 创建目标目录
-mkdir -p package/kenzo
 
-# 3. 只复制需要的单个插件（按需修改）
-# ----- 从 openwrt-packages 复制 -----
-#cp -r temp-kenzo/openwrt-packages/luci-app-store package/kenzo/
-cp -r temp-kenzo/openwrt-packages/luci-app-fileassistant package/kenzo/
-# ----- 从 small 复制依赖 -----
-#cp -r temp-kenzo/small/luci-app-ssr-plus package/kenzo/
-#cp -r temp-kenzo/small/luci-app-mosdns package/kenzo/
-# 4. 删除临时目录
-rm -rf temp-kenzo
 
 echo "==============================="
 echo "添加插件"
