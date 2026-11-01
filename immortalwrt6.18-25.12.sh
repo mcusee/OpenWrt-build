@@ -75,6 +75,7 @@ sed -i "s/bootstrap/argon/gi" feeds/luci/collections/luci-layer2/Makefile
 
 echo "修改固件品牌名称"
 sed -i 's/ImmortalWrt/OpenWrt/g' package/base-files/files/bin/config_generate
+sed -i 's/ImmortalWrt/OpenWrt/g' include/version.mk
 
 echo "修改 x86 内核版本"
 KERNEL=$1
