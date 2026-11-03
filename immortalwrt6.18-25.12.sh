@@ -41,7 +41,8 @@ git clone https://github.com/fw876/helloworld.git package/clone_custom_packages/
 git clone https://github.com/sbwml/luci-app-mosdns.git package/clone_custom_packages/luci-app-mosdns
 git clone https://github.com/timsaya/openwrt-bandix-plus.git package/clone_custom_packages/openwrt-bandix-plus
 git clone https://github.com/timsaya/luci-app-bandix-plus.git package/clone_custom_packages/luci-app-bandix-plus
-rm -rf package/clone_custom_packages/luci-app-mosdns/luci-app-mosdns/root/etc/init.d/mosdns
+rm -rf package/clone_custom_packages/helloworld/mosdns
+rm -rf feeds/packages/net/mosdns
 
 echo "==============================="
 echo "添加插件"
