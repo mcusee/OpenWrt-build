@@ -23,7 +23,6 @@ rm -rf feeds/luci/applications/luci-app-argon-config
 rm -rf feeds/luci/applications/luci-app-passwall
 rm -rf feeds/luci/applications/luci-app-passwall2
 #rm -rf feeds/luci/applications/luci-app-openclash
-
 echo "→ 清理索引 package/feeds/ 下的软链接..."
 
 #rm -rf package/feeds/packages/adguardhome
@@ -37,7 +36,12 @@ echo "============= 清理索引完成！============="
 echo "==============================="
 echo "添加插件"
 echo "==============================="
-
+mkdir -p package/clone_custom_packages
+git clone https://github.com/fw876/helloworld.git package/clone_custom_packages
+git clone https://github.com/sbwml/luci-app-mosdns.git package/clone_custom_packages
+git clone https://github.com/timsaya/openwrt-bandix-plus.git package/clone_custom_packages
+git clone https://github.com/timsaya/luci-app-bandix-plus.git package/clone_custom_packages
+rm -rf package/clone_custom_packages/luci-app-mosdns/luci-app-mosdns/root/etc/init.d/mosdns
 
 echo "==============================="
 echo "添加插件"
