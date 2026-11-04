@@ -1,6 +1,16 @@
 #!/bin/bash
 set -e
 
+# ========== 强制链接 UPX ==========
+mkdir -p staging_dir/host/bin
+if command -v upx >/dev/null 2>&1; then
+  ln -sf $(which upx) staging_dir/host/bin/upx
+  echo "UPX 已链接到 staging_dir/host/bin/upx"
+  staging_dir/host/bin/upx --version || true
+else
+  echo "警告: 系统未找到 upx，请确认已安装 upx-ucl"
+fi
+# ==================================
 echo "========================================="
 echo "开始执行 DIY 自定义脚本"
 echo "========================================="
