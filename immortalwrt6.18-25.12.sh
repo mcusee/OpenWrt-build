@@ -93,7 +93,7 @@ cp -f studio/icons/*.svg feeds/luci/modules/luci-base/htdocs/luci-static/resourc
 echo "SVG 图标替换完成"
 
 echo "下载 bg1.webp..."
-wget -O package/downloads/luci-theme-argon/htdocs/luci-static/argon/img/bg1.webp https://cdn.jsdelivr.net/gh/mcusee/OpenWrt-build@main/icons/bg1.webp
+wget -O package/clone_custom_packages/luci-theme-argon/htdocs/luci-static/argon/img/bg1.webp https://cdn.jsdelivr.net/gh/mcusee/OpenWrt-build@main/icons/bg1.webp
 echo "替换完成"
 
 wget -O .config https://raw.githubusercontent.com/mcusee/OpenWrt-build/refs/heads/main/Backup/ImmortalWrt/.config
