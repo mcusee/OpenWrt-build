@@ -51,30 +51,15 @@ git clone https://github.com/fw876/helloworld.git package/clone_custom_packages/
 git clone https://github.com/sbwml/luci-app-mosdns.git package/clone_custom_packages/luci-app-mosdns
 git clone https://github.com/timsaya/openwrt-bandix-plus.git package/clone_custom_packages/openwrt-bandix-plus
 git clone https://github.com/timsaya/luci-app-bandix-plus.git package/clone_custom_packages/luci-app-bandix-plus
+git clone https://github.com/jerrykuku/luci-theme-argon.git package/clone_custom_packages/luci-theme-argon
+git clone https://github.com/Openwrt-Passwall/openwrt-passwall.git package/clone_custom_packages/openwrt-passwall
 rm -rf package/clone_custom_packages/helloworld/mosdns
 rm -rf feeds/packages/net/mosdns
 
 echo "==============================="
 echo "添加插件"
 echo "==============================="
-# luci-theme-argon
-if [ -d "package/downloads/luci-theme-argon" ]; then
-    echo "luci-theme-argon 已存在，跳过"
-else
-    echo "正在克隆 luci-theme-argon..."
-    git clone https://github.com/jerrykuku/luci-theme-argon.git package/downloads/luci-theme-argon
-fi
 
-echo "==============================="
-echo "添加插件"
-echo "==============================="
-# openwrt-passwall
-if [ -d "package/openwrt-passwall" ]; then
-    echo "openwrt-passwall 已存在，跳过"
-else
-    echo "正在克隆 openwrt-passwall..."
-    git clone https://github.com/Openwrt-Passwall/openwrt-passwall.git package/openwrt-passwall
-fi
 
 echo "========================================"
 echo "修改本地文件"
