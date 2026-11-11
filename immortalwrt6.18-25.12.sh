@@ -53,6 +53,7 @@ git clone https://github.com/timsaya/openwrt-bandix-plus.git package/clone_custo
 git clone https://github.com/timsaya/luci-app-bandix-plus.git package/clone_custom_packages/luci-app-bandix-plus
 git clone https://github.com/jerrykuku/luci-theme-argon.git package/clone_custom_packages/luci-theme-argon
 git clone https://github.com/Openwrt-Passwall/openwrt-passwall.git package/clone_custom_packages/openwrt-passwall
+git clone https://github.com/EasyTier/luci-app-easytier.git package/clone_custom_packages/luci-app-easytier
 rm -rf package/clone_custom_packages/helloworld/mosdns
 rm -rf feeds/packages/net/mosdns
 
